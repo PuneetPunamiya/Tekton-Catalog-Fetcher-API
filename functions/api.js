@@ -1,5 +1,4 @@
 // quick and dirty way to get tasks from catalog o _o
-// quick and dirty way to get tasks from catalog o _o
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
