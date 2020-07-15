@@ -1,3 +1,5 @@
+// quick and dirty way to get tasks from catalog o _o
+// quick and dirty way to get tasks from catalog o _o
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -6,9 +8,6 @@ const serverless = require("serverless-http");
 const request = require('async-request');
 const router = express.Router();
 
-// helper functions
-// hacky way to get tasks from status
-
 const getTaskNames = (payload) => {
     return payload["spec"]["tasks"].map(task => task["taskRef"]["name"]);
 }
@@ -16,15 +15,12 @@ const getTaskNames = (payload) => {
 const getTasksFromRepo = async (repo, names) => {
     var result = { "apiVersion" : "v1", "kind" : "List", "items" : []};
     for(var i = 0; i < names.length; i++){
-        // some hard-coded url parsing stuff o _o
         response = await request(repo + "/task/" + names[i] + "/0.1/" + names[i] + ".yaml");
         result["items"].push(nativeObject = YAML.parse(response.body));
     }
-
     return result;
 }
 
-//main api functions
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -36,14 +32,12 @@ router.get('/', (req, res) => {
     res.end();
 });
 
-
 router.post('/get/tasks', async (req, res) => {
     const taskNames = getTaskNames(req.body);
     if(!taskNames){
         res.send("error => invalid post request")
     }
     let payload = await getTasksFromRepo("https://raw.githubusercontent.com/tektoncd/catalog/master", taskNames);
-    //add the orginal pipeline yaml to the payload
     payload["items"].push(req.body);
     res.send(payload);
 });
