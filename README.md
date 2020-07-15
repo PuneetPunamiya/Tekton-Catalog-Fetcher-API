@@ -3,7 +3,7 @@
 ## Description
 
 This Tekton Catalog API will take a Tekton Pipeline yaml in JSON format
-and fetch all tasks from the [catalog](https://github.com/tektoncd/catalog).
+and fetch all the neccessary tasks from the [catalog](https://github.com/tektoncd/catalog).
 
 TLDR; This will apply your pipeline and the task you reference from the catalog automatically.
 (I used javascript instead of golang cause the task/pipeline structs were giving me problems :crying_cat_face:)
